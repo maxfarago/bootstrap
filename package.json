@@ -1,0 +1,10 @@
+{
+    "name": "bootstrap-api",
+    "version": "1.0.0",
+    "description": "A Python RESTful API service built with Flask and Serverless (SLS) frameworks",
+    "author": "Max Farago",
+    "devDependencies": {
+        "serverless-python-requirements": "^6.0.1",
+        "serverless-wsgi": "^3.0.3"
+    }
+}
