@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-DB_HOSTNAME = "bootstrap-db.c7oo864ge6hu.us-east-1.rds.amazonaws.com"
+DB_HOSTNAME = "localhost"
 DB_USERNAME = "bootstrap"
-DB_PASSWORD = "TnSOMue4U4iYZVREyDqo"
+DB_PASSWORD = ""
 DB_CXN_STRING = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:5432/bootstrap"
 cxn = psycopg2.connect(DB_CXN_STRING)
 
@@ -25,7 +25,7 @@ def health():
 @app.route("/users")
 def get_users():
     cur = cxn.cursor()
-    query = f"SELECT * FROM users;"
+    query = f'SELECT * FROM public.user;'
     cur.execute(query)
     result = cur.fetchall()
     return jsonify(message=result)
