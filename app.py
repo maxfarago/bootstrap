@@ -1,3 +1,4 @@
+import os
 import datetime
 import logging
 import psycopg2
@@ -8,9 +9,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-DB_HOSTNAME = "localhost"
-DB_USERNAME = "bootstrap"
-DB_PASSWORD = ""
+DB_HOSTNAME = os.getenv(DB_HOSTNAME, "localhost")
+DB_USERNAME = os.getenv(DB_USERNAME, "bootstrap")
+DB_PASSWORD = os.getenv(DB_PASSWORD, "")
 DB_CXN_STRING = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:5432/bootstrap"
 cxn = psycopg2.connect(DB_CXN_STRING)
 
