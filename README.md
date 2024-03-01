@@ -3,9 +3,9 @@
 This monorepo contains the code for the full `bootstrap` stack:
 
 1. Ops/DevOps
-2. Database (PostgreSQL)
-3. API (Python via Flask)
-4. UI (TBD)
+2. Database
+3. API
+4. UI
 
 
 ## Ops/DevOps
@@ -17,7 +17,21 @@ Here it's used to set up Lambda and API Gateway in AWS, and connect them with ou
 
 ## Database
 
-The `bootstrap` stack uses a PostgreSQL database, built using the assets in the `db` directory.  To set up the database local development, you must first have postgres installed on your machine.  Then, `cd` into the `db` folder and run the `reset.sh` script.
+The `bootstrap` stack uses a PostgreSQL database that is deployed in an AWS [RDS](https://aws.amazon.com/rds/) cluster.  To set up the database for local development, first [install PostgreSQL](https://www.postgresql.org/download/) and follow the instructions for your operating system.
+
+After cloning the repo, navigate to the `db` folder in the application directory and run the `reset.sh` script from within that directory:
+
+```
+    pwd
+    > /Users/max/code/bootstrap
+    cd db
+    pwd
+    > /Users/max/code/bootstrap/db
+
+    source ./reset.sh
+    > ...
+    > INSERT 0 6
+```
 
 > [!CAUTION]
 > Running the reset script will delete any existing data you have in your local `bootstrap` DB instance.
@@ -31,6 +45,8 @@ The Bootstrap API is a RESTful API implemented using Python and [Flask](https://
 Local development on the application requires Python v3.11 installed.  If you don't have v3.11 installed, first [install pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) so you can easily install and manage different versions of Python.  Then use it to install v3.11:
 ```
     pyenv install 3.11
+    > ...
+    > Installed Python-3.11.8 to /Users/max/.pyenv/versions/3.11.8
 ```
 
 After cloning the repo, create a [virtual environment](https://docs.python.org/3/library/venv.html) inside the application directory.  Then activate the environment and install the requirements:
@@ -41,7 +57,7 @@ After cloning the repo, create a [virtual environment](https://docs.python.org/3
     source ./venv/bin/activate
 
     (venv) pip install -r requirements.txt
-    ...
+    > ...
     > Successfully installed Flask-3.0.2...
 
 ```
@@ -62,13 +78,14 @@ Use `npm` to install SLS and the [Serverless WSGI](https://www.serverless.com/pl
     > added 516 packages in 44s
 
     (venv) sls plugin install -n serverless-wsgi
+    > ...
     > ✔ Plugin "serverless-wsgi" installed  (2s)
 ```
 
 To run the server locally on port 8080:
 ```
     npm run serve
-    ...
+    > ...
     > * Running on http://localhost:8080
 ```
 
