@@ -41,8 +41,14 @@ After cloning the repo, navigate to the `db` folder in the application directory
 
 The Bootstrap API is a RESTful API implemented using Python and [Flask](https://flask.palletsprojects.com/en/3.0.x/).  The work of routing HTTP requests to and from our Flask application (via [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)) is handled by a SLS plugin that is automatically installed during deployment.
 
+### Public Endpoint
+Currently the API is deployed into a single development environment.  Deployment is automatic and triggered by changes to the `master` branch of this repo. Until DNS is set up against a human-readable endpoint, the development environment can be accessed at the following endpoint:
+```
+    https://0j676638y4.execute-api.us-east-1.amazonaws.com/
+```
+
 ### Local Development
-Local development on the application requires Python v3.11 installed.  If you don't have v3.11 installed, first [install pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) so you can easily install and manage different versions of Python.  Then use it to install v3.11:
+Development of the API locally requires Python v3.11 installed.  If you don't have v3.11 installed, first [install pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) so you can easily install and manage different versions of Python.  Then use it to install v3.11:
 ```
     pyenv install 3.11
     > ...
@@ -82,7 +88,7 @@ Use `npm` to install SLS and the [Serverless WSGI](https://www.serverless.com/pl
     > ✔ Plugin "serverless-wsgi" installed  (2s)
 ```
 
-To run the server locally on port 8080:
+To run the server locally on [port 8080](https://www.grc.com/port_8080.htm):
 ```
     npm run serve
     > ...

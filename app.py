@@ -37,7 +37,7 @@ def get_users():
         # TODO: modularize DB cxn creation (DRY)
         cxn = psycopg2.connect(DB_CXN_STRING)
         cur = cxn.cursor()
-        query = 'SELECT * FROM public.user;'
+        query = "SELECT * FROM public.user;"
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
@@ -55,10 +55,10 @@ def add_user():
     data = request.get_json()
 
     # TODO: payload validation
-    name_first = data["name_first"]
-    name_last = data["name_last"]
-    email_personal = data["email_personal"]
-    email_professional = data["email_professional"] or "DEFAULT"
+    name_first = f"'{data["name_first"]}'"
+    name_last = f"'{data["name_last"]}'"
+    email_personal = f"'{data["email_personal"]}'"
+    email_professional = f"'{data["email_professional"]}'" or "DEFAULT"
 
     try:
         # TODO: modularize DB cxn creation (DRY)
@@ -66,7 +66,7 @@ def add_user():
         cur = cxn.cursor()
         query = f"""
             INSERT INTO public.user VALUES
-            (DEFAULT, '{name_first}', '{name_last}', '{email_personal}', {email_professional})
+            (DEFAULT, {name_first}, {name_last}, {email_personal}, {email_professional})
             RETURNING id;
         """
         cur.execute(query)
@@ -87,7 +87,7 @@ def get_events():
         # TODO: modularize DB cxn creation (DRY)
         cxn = psycopg2.connect(DB_CXN_STRING)
         cur = cxn.cursor()
-        query = 'SELECT * FROM public.event;'
+        query = "SELECT * FROM public.event;"
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
@@ -105,13 +105,13 @@ def get_enrollment():
         # TODO: modularize DB cxn creation (DRY)
         cxn = psycopg2.connect(DB_CXN_STRING)
         cur = cxn.cursor()
-        query = '''
+        query = """
             SELECT event_name, CONCAT(name_first, ' ', name_last) as enrolled_user, role
             FROM enrollment
             JOIN event ON enrollment.event_id = event.id
             JOIN public.user ON enrollment.user_id = public.user.id
-            WHERE is_enrolled = TRUE
-        '''
+            WHERE is_enrolled = TRUE;
+        """
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
