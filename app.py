@@ -55,10 +55,10 @@ def add_user():
     data = request.get_json()
 
     # TODO: payload validation
-    name_first = f"'{data["name_first"]}'"
-    name_last = f"'{data["name_last"]}'"
-    email_personal = f"'{data["email_personal"]}'"
-    email_professional = f"'{data["email_professional"]}'" or "DEFAULT"
+    name_first = f"'{data['name_first']}'"
+    name_last = f"'{data['name_last']}'"
+    email_personal = f"'{data['email_personal']}'"
+    email_professional = f"'{data['email_professional']}'" or "DEFAULT"
 
     try:
         # TODO: modularize DB cxn creation (DRY)
