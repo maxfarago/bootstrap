@@ -2,13 +2,13 @@
 
 This monorepo contains the code for the full `bootstrap` stack:
 
-1. Ops/DevOps
-2. Database
-3. API
-4. UI
+1. [Infrastructure](#infrastructure)
+2. [Database](#database)
+3. [API](#api)
+4. [UI](#ui)
 
 
-## Ops/DevOps
+## Infrastructure
 
 Stack creation and deployment is handled via [Serverless Framework](https://www.serverless.com/) (SLS), an IaaS solution that deploys code to the [FaaS](https://en.wikipedia.org/wiki/Function_as_a_service) services offered by different cloud providers.
 
