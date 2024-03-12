@@ -1,15 +1,9 @@
 import os
 import datetime
-import logging
 import psycopg2
 
+from log import logger
 from flask import Flask, jsonify, make_response, request
-
-# LOGGING
-# only log messages of minimum severity level INFO
-# see: https://sematext.com/blog/logging-levels/
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 
 # DB
@@ -19,6 +13,7 @@ DB_HOSTNAME = os.getenv("DB_HOSTNAME", "localhost")
 DB_USERNAME = os.getenv("DB_USERNAME", "bootstrap")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 DB_CXN_STRING = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:5432/bootstrap"
+logger.info(f'Connected to {DB_CXN_STRING}')
 
 # FLASK
 # create the Flask instance
