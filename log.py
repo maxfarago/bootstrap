@@ -21,7 +21,7 @@ error_handler.setLevel(logging.ERROR)
 # create a log format using Log Record attributes
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 log_format = logging.Formatter(
-    f"{asctime}s | {levelname}s | {message}s"
+    "%(asctime)s | %(levelname)s | %(message)s"
 )
 
 # set the log format on each handler
