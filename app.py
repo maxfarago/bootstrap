@@ -1,21 +1,9 @@
-import os
-import datetime
-import psycopg2
-
 from log import logger
 from flask import Flask, jsonify, make_response, request
 
+from db import get_cxn, close_cxn
 
-# DB
-# look for DB credentials in the app environment
-# if none are available, assume local development
-DB_HOSTNAME = os.getenv("DB_HOSTNAME", "localhost")
-DB_USERNAME = os.getenv("DB_USERNAME", "bootstrap")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-DB_CXN_STRING = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:5432/bootstrap"
-logger.info(f'Connected to {DB_CXN_STRING}')
 
-# FLASK
 # create the Flask instance
 # see: https://flask.palletsprojects.com/en/3.0.x/api/#flask.Flask
 app = Flask(__name__)
@@ -23,22 +11,22 @@ app = Flask(__name__)
 
 @app.route("/")
 def health():
-    return jsonify(message='OK!')
+    return jsonify(message="OK!")
 
 
 @app.get("/users")
 def get_users():
     try:
-        # TODO: modularize DB cxn creation (DRY)
-        cxn = psycopg2.connect(DB_CXN_STRING)
+        cxn = get_cxn()
         cur = cxn.cursor()
         query = "SELECT * FROM public.user;"
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
+        logger.error(e)
         return make_response(jsonify(error=e), 502)
     finally:
-        cxn.close()
+        close_cxn()
 
     response = jsonify(users=result)
     return response
@@ -56,8 +44,7 @@ def add_user():
     email_professional = f"'{data['email_professional']}'" or "DEFAULT"
 
     try:
-        # TODO: modularize DB cxn creation (DRY)
-        cxn = psycopg2.connect(DB_CXN_STRING)
+        cxn = get_cxn()
         cur = cxn.cursor()
         query = f"""
             INSERT INTO public.user VALUES
@@ -68,9 +55,10 @@ def add_user():
         cxn.commit()
         new_id = cur.fetchone()[0]
     except Exception as e:
+        logger.error(e)
         return make_response(jsonify(error=e), 502)
     finally:
-        cxn.close()
+        close_cxn()
 
     response = jsonify(success=f"User added with ID {new_id}")
     return response
@@ -79,16 +67,16 @@ def add_user():
 @app.route("/events")
 def get_events():
     try:
-        # TODO: modularize DB cxn creation (DRY)
-        cxn = psycopg2.connect(DB_CXN_STRING)
+        cxn = get_cxn()
         cur = cxn.cursor()
         query = "SELECT * FROM public.event;"
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
+        logger.error(e)
         return make_response(jsonify(error=e), 502)
     finally:
-        cxn.close()
+        close_cxn()
 
     response = jsonify(events=result)
     return response
@@ -97,8 +85,7 @@ def get_events():
 @app.route("/enrollment")
 def get_enrollment():
     try:
-        # TODO: modularize DB cxn creation (DRY)
-        cxn = psycopg2.connect(DB_CXN_STRING)
+        cxn = get_cxn()
         cur = cxn.cursor()
         query = """
             SELECT event_name, CONCAT(name_first, ' ', name_last) as enrolled_user, role
@@ -110,20 +97,18 @@ def get_enrollment():
         cur.execute(query)
         result = cur.fetchall()
     except Exception as e:
+        logger.error(e)
         return make_response(jsonify(error=e), 502)
     finally:
-        cxn.close()
+        close_cxn()
 
     # roll up by `event` for the response
     event_enrollment = {}
-    for (event, name, role) in result:
+    for event, name, role in result:
         if event not in event_enrollment:
             event_enrollment[event] = []
 
-        enrolled_user = {
-            "name": name,
-            "role": role
-        }
+        enrolled_user = {"name": name, "role": role}
         event_enrollment[event].append(enrolled_user)
 
     response = jsonify(enrollment=event_enrollment)
@@ -132,4 +117,5 @@ def get_enrollment():
 
 @app.errorhandler(404)
 def resource_not_found(e):
-    return make_response(jsonify(error='Not found!'), 404)
+    logger.error(e)
+    return make_response(jsonify(error="Not found!"), 404)

@@ -8,10 +8,10 @@ logger = logging.getLogger("bootstrap")
 # see: https://sematext.com/blog/logging-levels/
 logger.setLevel(logging.DEBUG)
 
-# output DEBUG messages to standard output
+# output logs of level DEBUG and up to standard output
 stdout_handler = logging.StreamHandler(stream=sys.stdout)
 
-# output errors to a file
+# output logs of ERROR level to disk
 error_handler = logging.FileHandler("error.log")
 
 # set the log levels on the handlers
@@ -20,9 +20,7 @@ error_handler.setLevel(logging.ERROR)
 
 # create a log format using Log Record attributes
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
-log_format = logging.Formatter(
-    "%(asctime)s | %(levelname)s | %(message)s"
-)
+log_format = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
 
 # set the log format on each handler
 stdout_handler.setFormatter(log_format)
