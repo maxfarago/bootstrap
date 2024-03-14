@@ -113,4 +113,7 @@ In another shell, test that the server is running successfully by hitting the he
 
 ## UI
 
-Under Construction 🚧
+Initial interface is via Google Forms and Sheets to view, create, edit, and delete data in the database:
+- [View All Users](https://docs.google.com/spreadsheets/d/1ZKe3RvqS2tfd7QoGtbJuqAjC06MumdraqxoHF9C_8H4/edit?usp=sharing)
+- [Add User](https://forms.gle/VxUd83edfRbAJTeb7)
+- [View All Events](https://docs.google.com/spreadsheets/d/1V4aHEdxOMBpcsemU42Zn4O2BSLCCGwP1LhuV6827URc/edit?usp=sharing)
